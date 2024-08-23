@@ -1,0 +1,79 @@
+<nav class="navbar navbar-expand-lg bg navbar-light">
+    <a class="navbar-brand" href="#">Image Library</a>  
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Categories 
+          </a>  
+          <!--<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="">All Images</a> 
+            <a class="dropdown-item" href="#">Fruits</a>  
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Vegetables</a>   
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Animals</a>  
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Vehicles</a>--> 
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="category-dropdown">
+              <a class="dropdown-item" href="/home/">All Images</a>
+              {% for c in cats %}
+                <a class="dropdown-item" href="/category/{{c.pk}}">{{c.title}}</a>
+              {% endfor %}   
+            </div>
+        </li> 
+      </ul>
+      <!--<form class="form-inline my-2 my-lg-0" action="{% url 'search' %}" method="GET">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"> 
+        <button class="btn btn-outline-light
+         my-2 my-sm-0" type="submit">Search</button>
+      </form>--> 
+      <form class="form-inline my-2 my-lg-0" action="{% url 'search' %}" method="get">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="query">
+        <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    
+      <!--<form class="form-inline my-2 my-lg-0" id="category-search-form">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="category-search">
+        <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+      </form>-->               
+    </div>
+  </nav> 
+  <footer class="container-fluid fixed-bottom bg-success text-center p-2 mt-5"> 
+    Copyright : 2023 || Developed by: Pratyush Jha 
+  </footer> 
+  <script>
+    // Function to handle category click event
+    function loadCategoryImages(categoryUrl) {
+      $.ajax({
+        url: categoryUrl,
+        type: 'GET',
+        success: function(data) {
+          // Replace the image container with the new images
+          $('.card-columns').html(data);
+        },
+        error: function(error) {
+          console.log('Error loading category images:', error);
+        }
+      });
+    }
+  
+    // Event listener for category links
+    $('#category-dropdown .dropdown-item').click(function(e) {
+      e.preventDefault();
+      var categoryUrl = $(this).attr('href');
+      loadCategoryImages(categoryUrl);
+    });
+  
+    // Function to show the modal with the selected image
+    function showModalwithImage(imageUrl) {
+      $('#image-modal').modal('show');
+      $("#image-show").attr('src', `/media/${imageUrl}`);
+    }
+  </script>  
+
+
